@@ -12,7 +12,7 @@
       margin: 0;
       padding: 0;
       background-color: #d4cbb3;
-      overflow-x: hidden;
+      overflow-x: hidden; /* Prevent horizontal scrolling */
     }
     
     .main-container {
@@ -27,13 +27,15 @@
       position: sticky;
       top: 0;
       width: 100%;
-      box-sizing: border-box;
+      box-sizing: border-box; /* Ensures padding is included in width */
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 12px 20px;
       z-index: 1000;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin: 0; /* Reset any margins */
+      left: 0; /* Ensure it starts at the left edge */
     }
 
     .nav-title {
@@ -243,6 +245,7 @@
       margin: 0 auto;
       touch-action: pan-y;
       position: relative;
+      box-sizing: border-box;
     }
     
     /* Table styling */
@@ -280,17 +283,17 @@
       transition: color 0.3s ease;
     }
     
-    /* Value change animations */
+    /* Value change animations - with longer durations */
     .value-change {
-      animation: pulse 1.5s ease;
+      animation: pulse 1.5s ease; /* Increased from 0.6s to 1.5s */
     }
 
     .value-increase {
-      animation: increase 2s ease;
+      animation: increase 2s ease; /* Increased from 0.8s to 2s */
     }
 
     .value-decrease {
-      animation: decrease 2s ease;
+      animation: decrease 2s ease; /* Increased from 0.8s to 2s */
     }
 
     @keyframes pulse {
@@ -317,6 +320,37 @@
     
     /* Responsive styles */
     @media screen and (max-width: 768px) {
+      /* Mobile-specific enhancements */
+      input[type="range"] {
+        height: 25px; /* Taller touch target */
+        margin: 15px 0; /* More vertical space */
+      }
+  
+      /* Prevent horizontal scrolling */
+      body {
+        overflow-x: hidden;
+        touch-action: pan-y;
+      }
+  
+      /* Improve plot responsiveness */
+      #plot {
+        height: 400px;
+        touch-action: pan-y pinch-zoom;
+      }
+  
+      /* Spacing between sections */
+      .slider-group {
+        margin-bottom: 20px;
+      }
+  
+      /* Adjust info icons for touch */
+      .info-icon {
+        width: 22px;
+        height: 22px;
+        line-height: 22px;
+        font-size: 14px;
+      }
+    
       .mobile-menu-toggle {
         display: block;
       }
@@ -353,11 +387,6 @@
         padding: 12px;
       }
       
-      #plot {
-        height: 350px;
-        padding: 10px;
-      }
-      
       .group-title {
         font-size: 1em;
       }
@@ -375,7 +404,7 @@
       }
       
       .slider-container {
-        padding: 10px;
+        padding: 12px 10px;
       }
       
       .value-table {
@@ -400,7 +429,7 @@
       }
       
       #plot {
-        height: 300px;
+        height: 350px;
         padding: 10px;
       }
       
@@ -416,7 +445,7 @@
       }
       
       .slider-container {
-        padding: 8px;
+        padding: 12px 8px;
         margin-bottom: 8px;
       }
       
@@ -425,10 +454,10 @@
       }
       
       .info-icon {
-        width: 14px;
-        height: 14px;
-        line-height: 14px;
-        font-size: 10px;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+        font-size: 12px;
       }
       
       .value-table {
@@ -452,7 +481,6 @@
       <li><a href="#data-table">Results Table</a></li>
     </ul>
   </nav>
-
 
     
     <!-- How to Use Section -->
@@ -495,12 +523,12 @@
 
         <div class="slider-container">
           <label class="slider-label" for="compRoyalty">
-            Competitor Box Royalty ($): <span id="compRoyaltyVal">35</span>
+            Competitor Plant Box Royalty ($): <span id="compRoyaltyVal">35</span>
             <span class="tooltip info-icon">i
-              <span class="tooltiptext">Royalty fee paid per box for competitor products. Higher competitor royalties can make CBC more attractive.</span>
+              <span class="tooltiptext">Royalty fee paid per plant box for competitor products.</span>
             </span>
           </label>
-          <input type="range" id="compRoyalty" min="30" max="40" step="5" value="35">
+          <input type="range" id="compRoyalty" min="8" max="50" step="1" value="35">
         </div>
       </div>
       
@@ -510,9 +538,9 @@
         
         <div class="slider-container">
           <label class="slider-label" for="cbcRoyalty">
-            CBC Box Royalty ($): <span id="cbcRoyaltyVal">30</span>
+            CBC Plant Box Royalty ($): <span id="cbcRoyaltyVal">30</span>
             <span class="tooltip info-icon">i
-              <span class="tooltiptext">Royalty fee paid per box for CBC products. This affects the overall cost calculation.</span>
+              <span class="tooltiptext">Royalty fee paid per plant box for CBC products. This affects the overall cost calculation.</span>
             </span>
           </label>
           <input type="range" id="cbcRoyalty" min="25" max="40" step="5" value="30">
@@ -520,22 +548,22 @@
         
         <div class="slider-container">
           <label class="slider-label" for="trayRoyalty">
-            CBC Tray Royalty ($): <span id="trayRoyaltyVal">0.2</span>
+            CBC Prouction Royalty ($): <span id="trayRoyaltyVal">0.2</span>
             <span class="tooltip info-icon">i
-              <span class="tooltiptext">Royalty fee paid per tray for CBC products. This is multiplied by total trays produced.</span>
+              <span class="tooltiptext">Royalty fee paid per tray for CBC products. Fresh trays only. </span>
             </span>
           </label>
-          <input type="range" id="trayRoyalty" min="0" max="0.4" step="0.05" value="0.2">
+          <input type="range" id="trayRoyalty" min="0" max="0.4" step="0.05" value="0.0">
         </div>
       </div>
       
       <!-- General Parameters Group -->
       <div class="slider-group">
-        <h3 class="group-title">Market Parameters</h3>
+        <h3 class="group-title">Grower Parameters</h3>
         
         <div class="slider-container">
           <label class="slider-label" for="plantsPerAcre">
-            Plants per Acre: <span id="plantsPerAcreVal">24000</span>
+            Plants Per Acre: <span id="plantsPerAcreVal">24000</span>
             <span class="tooltip info-icon">i
               <span class="tooltiptext">Total number of plants grown per acre. Affects box calculations (1 box per 1000 plants).</span>
             </span>
@@ -545,9 +573,9 @@
         
         <div class="slider-container">
           <label class="slider-label" for="boxPrice">
-            Box Price ($): <span id="boxPriceVal">12</span>
+            Fruit Box Price ($): <span id="boxPriceVal">12</span>
             <span class="tooltip info-icon">i
-              <span class="tooltiptext">Market price per box of produce. Affects the value calculation for additional trays.</span>
+              <span class="tooltiptext">Market price per box of strawberries. Affects the value calculation for additional trays.</span>
             </span>
           </label>
           <input type="range" id="boxPrice" min="8" max="20" step="2" value="12">
@@ -566,7 +594,7 @@
       </thead>
       <tbody>
         <tr id="boxesRow">
-          <td>Boxes Per Acre</td>
+          <td>Plant Boxes Per Acre</td>
           <td id="boxesPerAcre" class="dynamic-value">24</td>
         </tr>
         <tr id="compRoyaltyRow">
@@ -574,11 +602,11 @@
           <td id="compTotalRoyalty" class="dynamic-value">840</td>
         </tr>
         <tr id="cbcBoxRoyaltyRow">
-          <td>CBC Box Royalty ($/acre)</td>
+          <td>CBC Plant Box Royalty ($/acre)</td>
           <td id="cbcBoxRoyalty" class="dynamic-value">720</td>
         </tr>
         <tr id="cbcTrayRoyaltyRow">
-          <td>CBC Tray Royalty ($/acre)</td>
+          <td>CBC Production Royalty ($/acre)</td>
           <td id="cbcTrayRoyalty" class="dynamic-value">1600</td>
         </tr>
         <tr id="cbcTotalRoyaltyRow">
@@ -590,7 +618,7 @@
           <td id="royaltyDiff" class="dynamic-value">-1480</td>
         </tr>
         <tr id="optimalTraysRow">
-          <td>Optimal CBC Trays for Break-Even</td>
+          <td>Required CBC Trays for Break-Even</td>
           <td id="optimalTrays" class="dynamic-value">8123</td>
         </tr>
         <tr id="currentValueRow">
@@ -772,14 +800,13 @@
           optimalTrays: parseFloat(tableData.optimalTrays.textContent) || 0,
         };
         
-
         // Update text content
         tableData.boxesPerAcre.textContent = results.boxesPerAcre.toFixed(1);
         tableData.compTotalRoyalty.textContent = '$' + results.compTotalRoyalty.toFixed(2);
-        tableData.cbcBoxRoyalty.textContent = '$' + results.cbcBoxRoyalty.toFixed(2);  // Missing '$'
-        tableData.cbcTrayRoyalty.textContent = '$' + results.cbcTrayRoyalty.toFixed(2); // Missing '$'
-        tableData.cbcTotalRoyalty.textContent = '$' + results.cbcTotalRoyalty.toFixed(2); // Missing '$'
-        tableData.royaltyDiff.textContent = '$' + results.royaltyDiff.toFixed(2); // Missing '$'
+        tableData.cbcBoxRoyalty.textContent = '$' + results.cbcBoxRoyalty.toFixed(2);
+        tableData.cbcTrayRoyalty.textContent = '$' + results.cbcTrayRoyalty.toFixed(2);
+        tableData.cbcTotalRoyalty.textContent = '$' + results.cbcTotalRoyalty.toFixed(2);
+        tableData.royaltyDiff.textContent = '$' + results.royaltyDiff.toFixed(2);
         tableData.optimalTrays.textContent = optimalTrays;
         
         // Apply animations if previous values exist
@@ -827,41 +854,41 @@
         }
       }
 
-
-
-        function setupHoverEvents() {
+      // Set up hover events for the plot
+      function setupHoverEvents() {
         const plotDiv = document.getElementById('plot');
         
-        plotDiv.on = plotDiv.on || function() {};
+        // For Plotly's custom events, extend the div with an on method
+        plotDiv.on = plotDiv.on || function(eventType, callback) {
+          this.addEventListener(eventType, callback);
+        };
         
-        // Use Plotly's specific event binding method
         plotDiv.on('plotly_hover', function(data) {
-            if (!data.points || data.points.length === 0) return;
-            
-            const pointData = data.points[0];
-            if (pointData.curveNumber !== 0) return; // Only respond to main curve
-            
-            const x = pointData.x;
-            const y = pointData.y;
-            
-            // Calculate values for the table
-            const results = computeGrowerValue(x, compTrays, cbcRoyalty, compRoyalty, trayRoyalty, plantsPerAcre, boxPrice);
-            
-            // Update table with hover values
-            tableData.currentTrays.textContent = x.toFixed(0);
-            tableData.growerValue.textContent = '$' + y.toFixed(2);
-            tableData.growerValue.style.color = y >= 0 ? 'green' : 'red';
-            tableData.trayDiff.textContent = (x - compTrays).toFixed(0);
-            tableData.cbcTrayRoyalty.textContent = '$' + results.cbcTrayRoyalty.toFixed(2);
-            tableData.cbcTotalRoyalty.textContent = '$' + results.cbcTotalRoyalty.toFixed(2);
-            
-            // Highlight relevant rows
-            Object.values(highlightRows).forEach(row => row.classList.add('highlight'));
+          if (!data.points || data.points.length === 0) return;
+          
+          const pointData = data.points[0];
+          if (pointData.curveNumber !== 0) return; // Only respond to main curve
+          
+          const x = pointData.x;
+          const y = pointData.y;
+          
+          // Calculate values for the table
+          const results = computeGrowerValue(x, compTrays, cbcRoyalty, compRoyalty, trayRoyalty, plantsPerAcre, boxPrice);
+          
+          // Update table with hover values
+          tableData.currentTrays.textContent = x.toFixed(0);
+          tableData.growerValue.textContent = '$' + y.toFixed(2);
+          tableData.growerValue.style.color = y >= 0 ? 'green' : 'red';
+          tableData.trayDiff.textContent = (x - compTrays).toFixed(0);
+          tableData.cbcTrayRoyalty.textContent = '$' + results.cbcTrayRoyalty.toFixed(2);
+          tableData.cbcTotalRoyalty.textContent = '$' + results.cbcTotalRoyalty.toFixed(2);
+          
+          // Highlight relevant rows
+          Object.values(highlightRows).forEach(row => row.classList.add('highlight'));
         });
         
         plotDiv.on('plotly_unhover', resetTableValues);
-        }
-
+      }
 
       // Reset all values to defaults
       function resetToDefaults() {
@@ -910,9 +937,15 @@
         
         // Create plot layout
         const plotLayout = {
-          title: { text: 'Grower Value vs. Tray Production', font: { size: 24 } },
+          title: { 
+            text: 'Grower Value vs. Tray Production', 
+            font: { size: 24 } 
+          },
           xaxis: {
-            title: 'CBC trays per Acre',
+            title: {
+              text: 'CBC trays per Acre',
+              font: { size: 14 }
+            },
             fixedrange: true,
             showspikes: true,
             spikemode: 'across',
@@ -921,7 +954,10 @@
             showgrid: true
           },
           yaxis: {
-            title: 'Grower Value per Acre ($)',
+            title: {
+              text: 'Grower Value per Acre ($)',
+              font: { size: 14 }
+            },
             fixedrange: true,
             range: [-15000, 25000],
             showspikes: true,
@@ -930,7 +966,7 @@
             showline: true,
             showgrid: true
           },
-          margin: { t: 100 },
+          margin: { t: 100, r: 30, l: 60, b: 50 },
           hovermode: 'closest',
           paper_bgcolor: 'rgba(255,255,255,0.4)',
           plot_bgcolor: 'rgba(255,255,255,0.4)',
@@ -960,7 +996,8 @@
               bordercolor: '#636363',
               borderpad: 4,
               borderwidth: 1,
-              opacity: 0.8
+              opacity: 0.8,
+              font: { size: 12 }
             }
           ]
         };
@@ -984,19 +1021,40 @@
             bordercolor: '#008000',
             borderpad: 4,
             borderwidth: 1,
-            opacity: 0.8
+            opacity: 0.8,
+            font: { size: 12 }
+          });
+        }
+        
+        // Adjust layout for mobile
+        if (window.innerWidth <= 768) {
+          plotLayout.title.font.size = 15;
+          plotLayout.xaxis.title.font.size = 10;
+          plotLayout.yaxis.title.font.size = 10;
+          plotLayout.margin = { t: 60, r: 10, l: 50, b: 50 };
+          plotLayout.legend = { orientation: 'h', y: -0.29, x: 0, xanchor: 'left' };
+          
+          // Adjust annotations for mobile
+          plotLayout.annotations.forEach(ann => {
+            ann.font.size = 10;
+            // Make annotations more compact on mobile
+            if (ann.text.includes('Break-Even')) {
+              ann.ay = 30;
+            } else if (ann.text.includes('Competitor')) {
+              ann.ay = -30;
+            }
           });
         }
         
         // Plot config
         const plotConfig = {
-          displayModeBar: true,
+          displayModeBar: window.innerWidth > 768, // Hide on mobile
           modeBarButtonsToAdd: ['toggleSpikelines'],
           showSpikeLines: true,
           responsive: true,
           scrollZoom: false,
           displaylogo: false,
-          modeBarButtonsToRemove: ['lasso2d', 'select2d']
+          modeBarButtonsToRemove: ['lasso2d', 'select2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d']
         };
         
         // Create or update the plot
@@ -1011,6 +1069,24 @@
         resetTableValues();
         createPlot();
         setupHoverEvents();
+      }
+
+      // Prevent page scrolling when interacting with sliders
+      function setupBetterMobileInteraction() {
+        const sliders = document.querySelectorAll('input[type="range"]');
+        sliders.forEach(slider => {
+          slider.addEventListener('touchmove', function(e) {
+            e.stopPropagation();
+          }, { passive: false });
+        });
+        
+        // Improve plot touch handling
+        const plotElement = document.getElementById('plot');
+        plotElement.addEventListener('touchmove', function(e) {
+          if (e.touches.length === 1) {
+            e.stopPropagation();
+          }
+        }, { passive: false });
       }
 
       // Add event listeners
@@ -1038,6 +1114,15 @@
           });
         });
         
+        // Window resize handler to update plot layout
+        window.addEventListener('resize', function() {
+          // Debounce the resize event
+          clearTimeout(window.resizeTimer);
+          window.resizeTimer = setTimeout(function() {
+            createPlot();
+          }, 250);
+        });
+        
         // Touch event for mobile
         document.getElementById('plot').addEventListener('touchmove', function(e) {
           if (e.target.closest('.main-svg')) {
@@ -1047,18 +1132,15 @@
       }
 
       // Initialize the calculator
-    function initialize() {
-    // Make sure DOM is fully loaded
-        setTimeout(function() {
-            initializeValues();
-            updateSliderDisplay();
-            updateTable();
-            createPlot();
-            setupHoverEvents();
-        }, 100);
-    
-    setupEventListeners();
-    }
+      function initialize() {
+        initializeValues();
+        updateSliderDisplay();
+        updateTable();
+        createPlot();
+        setupHoverEvents();
+        setupEventListeners();
+        setupBetterMobileInteraction();
+      }
 
       // Start the calculator
       initialize();
