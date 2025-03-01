@@ -12,6 +12,11 @@
       margin: 0;
       padding: 0;
       background-color: #d4cbb3;
+      background-image: url('/back_splash.png');
+      background-repeat: no-repeat; 
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
       overflow-x: hidden; /* Prevent horizontal scrolling */
     }
     
@@ -44,36 +49,6 @@
       font-size: 18px;
     }
 
-    .nav-links {
-      display: flex;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .nav-links li {
-      margin-left: 20px;
-    }
-
-    .nav-links a {
-      color: white;
-      text-decoration: none;
-      transition: opacity 0.3s;
-    }
-
-    .nav-links a:hover {
-      opacity: 0.8;
-    }
-
-    .mobile-menu-toggle {
-      display: none;
-      background: none;
-      border: none;
-      color: white;
-      font-size: 24px;
-      cursor: pointer;
-    }
-    
     /* Header styling */
     h1 {
       text-decoration: underline;
@@ -213,32 +188,12 @@
       visibility: visible;
       opacity: 1;
     }
-    
-    /* Button styling */
-    .button-container {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    
-    .reset-button {
-      background-color: #f44336;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      margin: 4px 2px;
-      cursor: pointer;
-      border-radius: 4px;
-    }
+
     
     /* Plot styling */
     #plot {
-      background: rgba(255, 255, 255, 0.8);
-      padding: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 10px;
       border-radius: 12px;
       width: 100%;
       height: 500px;
@@ -318,12 +273,33 @@
       width: 100%;
     }
     
+    /* Active point highlight for mobile */
+    tr.active-point {
+      background-color: rgba(255, 255, 0, 0.3) !important;
+      transition: background-color 0.3s ease;
+    }
+    
+    .tap-instruction {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      z-index: 100;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+    
     /* Responsive styles */
     @media screen and (max-width: 768px) {
       /* Mobile-specific enhancements */
       input[type="range"] {
-        height: 25px; /* Taller touch target */
-        margin: 15px 0; /* More vertical space */
+        height: 16px; /* Taller touch target */
+        margin: 4px 0; /* More vertical space */
       }
   
       /* Prevent horizontal scrolling */
@@ -351,43 +327,31 @@
         font-size: 14px;
       }
     
-      .mobile-menu-toggle {
-        display: block;
-      }
-
-      .nav-links {
-        position: absolute;
+      /* Fix tooltip positioning for mobile */
+      .tooltip .tooltiptext {
+        width: 80vw;
+        max-width: 280px;
+        left: 50%;
+        transform: translateX(-50%);
         top: 100%;
-        left: 0;
-        width: 100%;
-        flex-direction: column;
-        background-color: #4CAF50;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease;
-      }
-
-      .nav-links.show {
-        max-height: 300px;
-      }
-
-      .nav-links li {
-        margin: 0;
+        margin-top: 5px;
+        right: auto;
         text-align: center;
-        padding: 15px;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        z-index: 1000;
       }
       
       .controls-section {
-        grid-template-columns: 1fr;
-        gap: 15px;
+        gap: 4px;
       }
       
       .slider-group {
-        padding: 12px;
+        padding: 5px;
+        margin-bottom: 5px;
       }
       
       .group-title {
+        margin-bottom: 4px;
+        padding-bottom: 5px;
         font-size: 1em;
       }
       
@@ -404,7 +368,8 @@
       }
       
       .slider-container {
-        padding: 12px 10px;
+        padding: 8px;
+        margin-bottom: 5px;
       }
       
       .value-table {
@@ -412,14 +377,18 @@
       }
       
       .value-table th, .value-table td {
-        padding: 8px 4px;
+        padding: 12px 6px;
       }
       
-      .tooltip .tooltiptext {
-        width: calc(100% - 40px);
-        left: 20px;
-        top: 30px;
-        transform: none;
+      /* Make the dynamic values stand out more */
+      .dynamic-value {
+        font-weight: bold;
+        font-size: 16px;
+      }
+      
+      /* Improve plot touchability */
+      .js-plotly-plot .plotly .nsewdrag {
+        cursor: pointer !important;
       }
     }
     
@@ -465,24 +434,18 @@
       }
       
       .value-table th, .value-table td {
-        padding: 6px 3px;
+        padding: 10px 4px;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Navigation -->
+  <!-- Simplified Navigation -->
   <nav class="calculator-nav">
     <div class="nav-title">Grower Value Calculator</div>
-    <button id="mobileMenuToggle" class="mobile-menu-toggle">☰</button>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#calculator">Calculator</a></li>
-      <li><a href="#how-to-use">How to Use</a></li>
-      <li><a href="#data-table">Results Table</a></li>
-    </ul>
   </nav>
 
-    
+  <div class="main-container">
     <!-- How to Use Section -->
     <div id="how-to-use" class="how-to-use">
       <details>
@@ -492,7 +455,7 @@
           <ol>
             <li>Adjust the sliders to match your specific scenario</li>
             <li>The graph updates in real-time to show grower value vs. tray production</li>
-            <li>Hover over the graph to see detailed values for specific production levels</li>
+            <li>Hover over the graph (or tap on mobile) to see detailed values for specific production levels</li>
             <li>Key metrics are displayed in the table below</li>
             <li>The break-even point is marked on the graph</li>
           </ol>
@@ -501,9 +464,7 @@
       </details>
     </div>
     
-    <div class="button-container">
-      <button id="resetButton" class="reset-button">Reset to Defaults</button>
-    </div>
+
     
     <!-- Grouped Sliders -->
     <div class="controls-section">
@@ -548,12 +509,12 @@
         
         <div class="slider-container">
           <label class="slider-label" for="trayRoyalty">
-            CBC Prouction Royalty ($): <span id="trayRoyaltyVal">0.2</span>
+            CBC Production Royalty ($): <span id="trayRoyaltyVal">0.2</span>
             <span class="tooltip info-icon">i
-              <span class="tooltiptext">Royalty fee paid per tray for CBC products. Fresh trays only. </span>
+              <span class="tooltiptext">Royalty fee paid per tray for CBC products. Fresh trays only.</span>
             </span>
           </label>
-          <input type="range" id="trayRoyalty" min="0" max="0.4" step="0.05" value="0.0">
+          <input type="range" id="trayRoyalty" min="0" max="0.4" step="0.05" value="0.2">
         </div>
       </div>
       
@@ -638,11 +599,6 @@
 
     <script>
       // Default values
-      const defaultValues = {
-        compTrays: 8000, cbcRoyalty: 30, compRoyalty: 35,
-        trayRoyalty: 0.2, plantsPerAcre: 24000, boxPrice: 12
-      };
-
       // Get DOM elements for sliders
       const sliders = {
         compTrays: document.getElementById('compTrays'),
@@ -691,6 +647,14 @@
       
       // Track previous values for animations
       let prevValues = {};
+      
+      // Utility function to detect mobile devices
+      function isMobile() {
+        return window.innerWidth <= 768 || 
+               navigator.maxTouchPoints > 0 || 
+               navigator.msMaxTouchPoints > 0 ||
+               ('ontouchstart' in window);
+      }
       
       // Initialize current values from sliders
       function initializeValues() {
@@ -745,7 +709,111 @@
           element.classList.add('value-decrease');
         }
       }
+      
+      // Setup hover/touch events for the plot
+      function setupHoverEvents() {
+        const plotDiv = document.getElementById('plot');
+        
+        // Helper function to update values based on point data
+        function updateValuesFromPoint(pointData) {
+          if (!pointData || pointData.curveNumber !== 0) return; // Only respond to main curve
+          
+          const x = pointData.x;
+          const y = pointData.y;
+          
+          // Calculate values for the table
+          const results = computeGrowerValue(x, compTrays, cbcRoyalty, compRoyalty, trayRoyalty, plantsPerAcre, boxPrice);
+          
+          // Update table with hover/touch values
+          tableData.currentTrays.textContent = x.toFixed(0);
+          tableData.growerValue.textContent = '$' + y.toFixed(2);
+          tableData.growerValue.style.color = y >= 0 ? 'green' : 'red';
+          tableData.trayDiff.textContent = (x - compTrays).toFixed(0);
+          tableData.cbcTrayRoyalty.textContent = '$' + results.cbcTrayRoyalty.toFixed(2);
+          tableData.cbcTotalRoyalty.textContent = '$' + results.cbcTotalRoyalty.toFixed(2);
+          
+          // Highlight relevant rows
+          Object.values(highlightRows).forEach(row => row.classList.add('highlight'));
+        }
+        
+        // For Plotly's custom events, extend the div with an on method
+        plotDiv.on = plotDiv.on || function(eventType, callback) {
+          this.addEventListener(eventType, callback);
+        };
+        
+        // Desktop hover events
+        plotDiv.on('plotly_hover', function(data) {
+          if (!data.points || data.points.length === 0) return;
+          updateValuesFromPoint(data.points[0]);
+        });
+        
+        plotDiv.on('plotly_unhover', resetTableValues);
+        
+        // Add mobile touch events
+        plotDiv.on('plotly_click', function(data) {
+          if (!data.points || data.points.length === 0) return;
+          updateValuesFromPoint(data.points[0]);
+          
+          // On mobile, we need to handle resetting differently since there's no unhover
+          if (isMobile()) {
+            Object.values(highlightRows).forEach(row => row.classList.remove('active-point'));
 
+            // Add a visual indicator that the point is selected
+            document.getElementById('growerValueRow').classList.add('active-point');
+            
+
+          }
+        });
+      }
+
+      // Improve mobile interaction
+      // Improve mobile interaction
+function setupBetterMobileInteraction() {
+  const sliders = document.querySelectorAll('input[type="range"]');
+  sliders.forEach(slider => {
+    slider.addEventListener('touchmove', function(e) {
+      e.stopPropagation();
+    }, { passive: false });
+  });
+  
+  // Improve plot touch handling
+  const plotElement = document.getElementById('plot');
+  const plotDiv = document.getElementById('plot');
+  
+  // Ensure plotDiv has the on method
+  plotDiv.on = plotDiv.on || function(eventType, callback) {
+    this.addEventListener(eventType, callback);
+  };
+  
+  // Prevent default touch behavior to avoid scrolling issues
+  plotElement.addEventListener('touchmove', function(e) {
+    if (e.touches.length === 1) {
+      e.stopPropagation();
+    }
+  }, { passive: false });
+  
+  // Add visual feedback for touch interactions
+  if (isMobile()) {
+    // Add a tap instruction element for mobile users
+    const tapInstruction = document.createElement('div');
+    tapInstruction.className = 'tap-instruction';
+    tapInstruction.textContent = 'Tap on the graph to see values';
+    plotElement.appendChild(tapInstruction);
+    
+    // Only fade out the instruction when the user taps on the plot
+    plotDiv.on('plotly_click', function() {
+      tapInstruction.style.transition = 'opacity 1s';
+      tapInstruction.style.opacity = '0';
+    });
+    
+    // Add a touch handler for the entire plot area to improve mobile interaction
+    plotElement.addEventListener('touchstart', function(e) {
+      // Prevent default behavior to avoid conflicts
+      e.preventDefault();
+    }, { passive: false });
+  }
+}
+      
       // Generate x values for the plot
       function generateXValues(compTrays) {
         const xData = [];
@@ -784,6 +852,28 @@
         return Math.round((low + high) / 2);
       }
 
+      // Reset the dynamic table values
+      function resetTableValues() {
+        const results = computeGrowerValue(compTrays, compTrays, cbcRoyalty, compRoyalty, trayRoyalty, plantsPerAcre, boxPrice);
+        
+        tableData.currentTrays.textContent = compTrays.toFixed(0);
+        tableData.growerValue.textContent = '$0.00';
+        tableData.growerValue.style.color = 'black';
+        tableData.trayDiff.textContent = '0';
+        tableData.cbcTrayRoyalty.textContent = '$' + results.cbcTrayRoyalty.toFixed(2);
+        tableData.cbcTotalRoyalty.textContent = '$' + results.cbcTotalRoyalty.toFixed(2);
+        
+        // Remove highlighting
+        Object.values(highlightRows).forEach(row => row.classList.remove('highlight'));
+      }
+      
+      // Update the displayed values on sliders
+      function updateSliderDisplay() {
+        for (const key in sliderValues) {
+          sliderValues[key].textContent = sliders[key].value;
+        }
+      }
+      
       // Update the table with current values
       function updateTable() {
         const results = computeGrowerValue(compTrays, compTrays, cbcRoyalty, compRoyalty, trayRoyalty, plantsPerAcre, boxPrice);
@@ -832,72 +922,6 @@
         };
       }
 
-      // Reset the dynamic table values
-      function resetTableValues() {
-        const results = computeGrowerValue(compTrays, compTrays, cbcRoyalty, compRoyalty, trayRoyalty, plantsPerAcre, boxPrice);
-        
-        tableData.currentTrays.textContent = compTrays.toFixed(0);
-        tableData.growerValue.textContent = '$0.00';
-        tableData.growerValue.style.color = 'black';
-        tableData.trayDiff.textContent = '0';
-        tableData.cbcTrayRoyalty.textContent = '$' + results.cbcTrayRoyalty.toFixed(2);
-        tableData.cbcTotalRoyalty.textContent = '$' + results.cbcTotalRoyalty.toFixed(2);
-        
-        // Remove highlighting
-        Object.values(highlightRows).forEach(row => row.classList.remove('highlight'));
-      }
-      
-      // Update the displayed values on sliders
-      function updateSliderDisplay() {
-        for (const key in sliderValues) {
-          sliderValues[key].textContent = sliders[key].value;
-        }
-      }
-
-      // Set up hover events for the plot
-      function setupHoverEvents() {
-        const plotDiv = document.getElementById('plot');
-        
-        // For Plotly's custom events, extend the div with an on method
-        plotDiv.on = plotDiv.on || function(eventType, callback) {
-          this.addEventListener(eventType, callback);
-        };
-        
-        plotDiv.on('plotly_hover', function(data) {
-          if (!data.points || data.points.length === 0) return;
-          
-          const pointData = data.points[0];
-          if (pointData.curveNumber !== 0) return; // Only respond to main curve
-          
-          const x = pointData.x;
-          const y = pointData.y;
-          
-          // Calculate values for the table
-          const results = computeGrowerValue(x, compTrays, cbcRoyalty, compRoyalty, trayRoyalty, plantsPerAcre, boxPrice);
-          
-          // Update table with hover values
-          tableData.currentTrays.textContent = x.toFixed(0);
-          tableData.growerValue.textContent = '$' + y.toFixed(2);
-          tableData.growerValue.style.color = y >= 0 ? 'green' : 'red';
-          tableData.trayDiff.textContent = (x - compTrays).toFixed(0);
-          tableData.cbcTrayRoyalty.textContent = '$' + results.cbcTrayRoyalty.toFixed(2);
-          tableData.cbcTotalRoyalty.textContent = '$' + results.cbcTotalRoyalty.toFixed(2);
-          
-          // Highlight relevant rows
-          Object.values(highlightRows).forEach(row => row.classList.add('highlight'));
-        });
-        
-        plotDiv.on('plotly_unhover', resetTableValues);
-      }
-
-      // Reset all values to defaults
-      function resetToDefaults() {
-        for (const key in sliders) {
-          sliders[key].value = defaultValues[key];
-        }
-        updatePlot();
-      }
-
       // Create and update the plot
       function createPlot() {
         const xData = generateXValues(compTrays);
@@ -910,8 +934,7 @@
             x: xData,
             y: yData,
             mode: 'lines',
-            name: 'Grower Value per Acre',
-            line: { color: '#FF0000', width: 3 },
+            line: { color: '#FF0000', width: isMobile() ? 4 : 3  },
             type: 'scatter',
             hovertemplate: '<b>CBC Trays: %{x}</b><br><b>Grower Value: $%{y:.2f}</b><br><extra></extra>'
           },
@@ -919,7 +942,6 @@
             x: [compTrays, compTrays],
             y: [-15000, 25000],
             mode: 'lines',
-            name: 'Competitor Production',
             line: { color: 'red', width: 1, dash: 'dash' },
             type: 'scatter',
             hovertemplate: '<b>Competitor Trays: %{x}</b><br><extra></extra>'
@@ -928,7 +950,6 @@
             x: [compTrays - 1000, compTrays + 2000],
             y: [0, 0],
             mode: 'lines',
-            name: 'Break-Even Point',
             line: { color: 'green', width: 1, dash: 'dash' },
             type: 'scatter',
             hovertemplate: '<b>Break-Even Value: $0</b><br><extra></extra>'
@@ -941,10 +962,12 @@
             text: 'Grower Value vs. Tray Production', 
             font: { size: 24 } 
           },
+          showlegend: false,
           xaxis: {
             title: {
               text: 'CBC trays per Acre',
-              font: { size: 14 }
+              font: { size: 14 },
+              standoff: 8
             },
             fixedrange: true,
             showspikes: true,
@@ -966,11 +989,10 @@
             showline: true,
             showgrid: true
           },
-          margin: { t: 100, r: 30, l: 60, b: 50 },
+          margin: { t: 100, r: 30, l: 60, b: 55 },
           hovermode: 'closest',
-          paper_bgcolor: 'rgba(255,255,255,0.4)',
-          plot_bgcolor: 'rgba(255,255,255,0.4)',
-          legend: { orientation: 'h', y: -0.2 },
+          paper_bgcolor: 'rgba(255,255,255,0.01)',
+          plot_bgcolor: 'rgba(255,255,255,0.01)',
           responsive: true,
           hoverlabel: {
             bgcolor: '#FFF',
@@ -1027,12 +1049,23 @@
         }
         
         // Adjust layout for mobile
-        if (window.innerWidth <= 768) {
+        if (isMobile()) {
           plotLayout.title.font.size = 15;
           plotLayout.xaxis.title.font.size = 10;
           plotLayout.yaxis.title.font.size = 10;
-          plotLayout.margin = { t: 60, r: 10, l: 50, b: 50 };
-          plotLayout.legend = { orientation: 'h', y: -0.29, x: 0, xanchor: 'left' };
+          plotLayout.margin = { t: 30, r: 30, l: 40, b: 55 };
+          plotLayout.legend = false;
+          
+          // Mobile-specific hover enhancements
+          plotLayout.hoverdistance = 30; // Increase the hover/touch detection distance
+          
+          // Make the hover label bigger on mobile for better visibility
+          plotLayout.hoverlabel = {
+            bgcolor: '#FFF',
+            bordercolor: '#333',
+            font: { size: 16, family: 'Arial, sans-serif' },
+            padding: 12
+          };
           
           // Adjust annotations for mobile
           plotLayout.annotations.forEach(ann => {
@@ -1044,17 +1077,23 @@
               ann.ay = -30;
             }
           });
+          
+          // Update data templates for mobile
+          plotData[0].hovertemplate = '<b>Trays: %{x}</b><br><b>Value: $%{y:.2f}</b><br><extra></extra>';
         }
         
-        // Plot config
+        // Plot config optimized for both desktop and mobile
         const plotConfig = {
-          displayModeBar: window.innerWidth > 768, // Hide on mobile
+          displayModeBar: !isMobile(), // Hide on mobile
           modeBarButtonsToAdd: ['toggleSpikelines'],
           showSpikeLines: true,
           responsive: true,
           scrollZoom: false,
           displaylogo: false,
-          modeBarButtonsToRemove: ['lasso2d', 'select2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d']
+          modeBarButtonsToRemove: ['lasso2d', 'select2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d'],
+          staticPlot: false, // Make the plot static on mobile to improve touch interaction
+          doubleClick: false, // Disable double-click to avoid accidental zooming on mobile
+          showTips: true
         };
         
         // Create or update the plot
@@ -1070,56 +1109,21 @@
         createPlot();
         setupHoverEvents();
       }
-
-      // Prevent page scrolling when interacting with sliders
-      function setupBetterMobileInteraction() {
-        const sliders = document.querySelectorAll('input[type="range"]');
-        sliders.forEach(slider => {
-          slider.addEventListener('touchmove', function(e) {
-            e.stopPropagation();
-          }, { passive: false });
-        });
-        
-        // Improve plot touch handling
-        const plotElement = document.getElementById('plot');
-        plotElement.addEventListener('touchmove', function(e) {
-          if (e.touches.length === 1) {
-            e.stopPropagation();
-          }
-        }, { passive: false });
-      }
-
+      
       // Add event listeners
       function setupEventListeners() {
         // Slider event listeners
         for (const key in sliders) {
           sliders[key].addEventListener('input', updatePlot);
         }
-        
-        // Reset button
-        document.getElementById('resetButton').addEventListener('click', resetToDefaults);
-        
-        // Mobile menu toggle
-        document.getElementById('mobileMenuToggle').addEventListener('click', function() {
-          document.getElementById('navLinks').classList.toggle('show');
-        });
-
-        // Close mobile menu when clicking on a link
-        const navLinks = document.querySelectorAll('.nav-links a');
-        navLinks.forEach(link => {
-          link.addEventListener('click', function() {
-            if (window.innerWidth <= 768) {
-              document.getElementById('navLinks').classList.remove('show');
-            }
-          });
-        });
-        
+                
         // Window resize handler to update plot layout
         window.addEventListener('resize', function() {
           // Debounce the resize event
           clearTimeout(window.resizeTimer);
           window.resizeTimer = setTimeout(function() {
             createPlot();
+            setupHoverEvents(); // Re-setup events after resize
           }, 250);
         });
         
@@ -1130,7 +1134,7 @@
           }
         }, { passive: false });
       }
-
+      
       // Initialize the calculator
       function initialize() {
         initializeValues();
@@ -1138,8 +1142,8 @@
         updateTable();
         createPlot();
         setupHoverEvents();
-        setupEventListeners();
         setupBetterMobileInteraction();
+        setupEventListeners();
       }
 
       // Start the calculator
